@@ -14,14 +14,14 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-    String username = "Nouri";
-    String password = "Nouri";
-    static final String Token = "1234-1234-1234-1234";
-
 
 
     private final MovieService movieService;
     private final AuthenticationService authenticationService;
+
+    String username = "Nouri";
+    String password = "Nouri";
+    static final String token = "Nouri";
 
     @Autowired
     public MovieController(MovieService movieService, AuthenticationService authenticationService) {
@@ -30,27 +30,28 @@ public class MovieController {
     }
 
     @GetMapping
-    public ArrayList<Movie> getAllMovies() {
+    public ArrayList<Movie> getAllMovies() throws Exception {
+        authenticate(token);
         return movieService.getMovieList();
     }
 
     @GetMapping("/show")
     public Movie getMovieById(@RequestParam("id") String id) throws Exception {
-           authenticate(Token);
+           authenticate(token);
             Movie movie = movieService.getMovieById(id);
             return movie;
     }
 
     @PostMapping("/add")
     public Movie addMovie(@RequestBody Movie movie) throws Exception {
-        authenticate(Token);
+        authenticate(token);
         movieService.insertMovie(movie);
         return movie;
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMovie(@PathVariable("id") String id) throws Exception {
-        authenticate(Token);
+        authenticate(token);
         movieService.deleteMovie(id);
         return ResponseEntity.ok().build();
     }

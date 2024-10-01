@@ -14,6 +14,12 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
+    String username = "Nouri";
+    String password = "Nouri";
+    static final String Token = "1234-1234-1234-1234";
+
+
+
     private final MovieService movieService;
     private final AuthenticationService authenticationService;
 
@@ -29,20 +35,22 @@ public class MovieController {
     }
 
     @GetMapping("/show")
-    public Movie getMovieById(@RequestParam("id") String id) {
-
+    public Movie getMovieById(@RequestParam("id") String id) throws Exception {
+           authenticate(Token);
             Movie movie = movieService.getMovieById(id);
             return movie;
     }
 
     @PostMapping("/add")
-    public Movie addMovie(@RequestBody Movie movie) {
+    public Movie addMovie(@RequestBody Movie movie) throws Exception {
+        authenticate(Token);
         movieService.insertMovie(movie);
         return movie;
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteMovie(@PathVariable("id") String id) {
+    public ResponseEntity<String> deleteMovie(@PathVariable("id") String id) throws Exception {
+        authenticate(Token);
         movieService.deleteMovie(id);
         return ResponseEntity.ok().build();
     }
@@ -54,6 +62,13 @@ public class MovieController {
             throw new AuthenticationException("Invalid token");
         }
     }
+
+
+
+
+
+
+
 
 
 }
